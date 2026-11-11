@@ -1,8 +1,11 @@
 package com.payment.system.domain;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Getter
 public class Payment {
     private final UUID id;
     private final BigDecimal valor;
@@ -11,7 +14,7 @@ public class Payment {
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
-    public Payment(UUID id, BigDecimal valor, String sender, String recipient, PaymentStatus status, UUID idempotencyKey) {
+    public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
@@ -43,5 +46,6 @@ public class Payment {
             throw new IllegalArgumentException("Invalid Status Transition");
         }
     }
+
 
 }
