@@ -1,11 +1,12 @@
 package com.payment.system.domain.events;
 
 import com.payment.system.domain.Payment;
-import com.payment.system.domain.PaymentStatus;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+
 
 public record PaymentRequestedEvent(
         UUID id,
