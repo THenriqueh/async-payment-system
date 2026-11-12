@@ -1,8 +1,11 @@
 package com.payment.system.domain;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Getter
 public class Payment {
     private final UUID id;
     private final BigDecimal valor;
@@ -11,7 +14,7 @@ public class Payment {
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
-    public Payment(UUID id, BigDecimal valor, String sender, String recipient, PaymentStatus status, UUID idempotencyKey) {
+    public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
@@ -42,6 +45,18 @@ public class Payment {
         } else {
             throw new IllegalArgumentException("Invalid Status Transition");
         }
+    }
+
+    /**
+     * Reconstructs a Payment from already-persisted data, preserving its original status.
+     * For persistence-layer use only — do not use to create new payments
+     * (for creation, use the constructor, which forces the REQUESTED status).
+     */
+    public static Payment reconstitute(UUID id, BigDecimal valor, String sender,
+                                       String recipient, PaymentStatus status, UUID idempotencyKey) {
+        Payment payment = new Payment(id, valor, sender, recipient, idempotencyKey);
+        payment.status = status; // Set the status directly since it's a reconstitution
+        return payment;
     }
 
 }
