@@ -32,9 +32,7 @@ public class PaymentService implements ProcessPaymentUseCase {
                 processPaymentCommand.sender(),
                 processPaymentCommand.recipient(),
                 processPaymentCommand.idempotencyKey());
-
         Payment savedPayment = savePaymentPort.save(payment);
-
         publishEventPort.publish(PaymentRequestedEvent.from(savedPayment));
 
         return savedPayment;

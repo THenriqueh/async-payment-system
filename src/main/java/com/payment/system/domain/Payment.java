@@ -47,5 +47,16 @@ public class Payment {
         }
     }
 
+    /**
+     * Reconstructs a Payment from already-persisted data, preserving its original status.
+     * For persistence-layer use only — do not use to create new payments
+     * (for creation, use the constructor, which forces the REQUESTED status).
+     */
+    public static Payment reconstitute(UUID id, BigDecimal valor, String sender,
+                                       String recipient, PaymentStatus status, UUID idempotencyKey) {
+        Payment payment = new Payment(id, valor, sender, recipient, idempotencyKey);
+        payment.status = status; // Set the status directly since it's a reconstitution
+        return payment;
+    }
 
 }
