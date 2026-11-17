@@ -2,7 +2,7 @@ package com.payment.system.controller;
 
 import com.payment.system.domain.Payment;
 import com.payment.system.domain.ports.in.ProcessPaymentCommand;
-import com.payment.system.domain.ports.in.ProcessPaymentUseCase;
+import com.payment.system.domain.ports.in.RequestPaymentUseCase;
 import com.payment.system.dto.PaymentRequest;
 import com.payment.system.dto.PaymentResponse;
 import jakarta.validation.Valid;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final ProcessPaymentUseCase processPaymentUseCase;
+    private final RequestPaymentUseCase processPaymentUseCase;
 
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
@@ -31,7 +31,7 @@ public class PaymentController {
                 paymentRequest.recipient(),
                 UUID.fromString(paymentRequest.idempotencyKey())
         );
-        Payment payment = processPaymentUseCase.processPayment(command);
+        Payment payment = processPaymentUseCase.requestPayment(command);
 
         return ResponseEntity.accepted().body(PaymentResponse.from(payment));
     }

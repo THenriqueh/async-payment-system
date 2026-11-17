@@ -14,6 +14,8 @@ public class Payment {
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
+    private static final BigDecimal LIMIT = new BigDecimal("5000");
+
     public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
@@ -55,8 +57,23 @@ public class Payment {
     public static Payment reconstitute(UUID id, BigDecimal valor, String sender,
                                        String recipient, PaymentStatus status, UUID idempotencyKey) {
         Payment payment = new Payment(id, valor, sender, recipient, idempotencyKey);
-        payment.status = status; // Set the status directly since it's a reconstitution
+        payment.status = status;
         return payment;
     }
 
+    public void authorize(){
+        if(valor.compareTo(LIMIT) > 0){
+           fail();
+           return;
+        }
+        changeStatus(PaymentStatus.AUTHORIZED);
+    }
+
+    public void fail() {
+        changeStatus(PaymentStatus.FAILED);
+    }
+
+    public void capture() {
+        changeStatus(PaymentStatus.CAPTURED);
+    }
 }
