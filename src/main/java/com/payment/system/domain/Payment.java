@@ -14,6 +14,8 @@ public class Payment {
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
+    private static final BigDecimal LIMIT = new BigDecimal("5000");
+
     public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
@@ -59,4 +61,19 @@ public class Payment {
         return payment;
     }
 
+    public void authorize(){
+        if(valor.compareTo(LIMIT) > 0){
+           fail();
+           return;
+        }
+        changeStatus(PaymentStatus.AUTHORIZED);
+    }
+
+    public void fail() {
+        changeStatus(PaymentStatus.FAILED);
+    }
+
+    public void capture() {
+        changeStatus(PaymentStatus.CAPTURED);
+    }
 }

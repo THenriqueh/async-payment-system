@@ -1,6 +1,7 @@
 package com.payment.system.adapter.out.persistence;
 
 import com.payment.system.domain.Payment;
+import com.payment.system.domain.ports.out.LoadPaymentPort;
 import com.payment.system.domain.ports.out.SavePaymentPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentPersistenceAdapter implements SavePaymentPort {
+public class PaymentPersistenceAdapter implements SavePaymentPort, LoadPaymentPort {
 
     private final PaymentJpaRepository paymentJpaRepository;
     private final PaymentMapper paymentMapper;
@@ -24,10 +25,17 @@ public class PaymentPersistenceAdapter implements SavePaymentPort {
     }
 
     @Override
+    public Optional<Payment> findById(UUID paymentId) {
+
+        return paymentJpaRepository.findById(paymentId).map(paymentMapper::toDomain);
+    }
+
+    @Override
     public Optional<Payment> findByIdempotencyKey(UUID idempotencyKey) {
 
-       return paymentJpaRepository.findByIdempotencyKey(idempotencyKey).map(paymentMapper::toDomain);
+        return paymentJpaRepository.findByIdempotencyKey(idempotencyKey).map(paymentMapper::toDomain);
 
     }
+
 }
 
