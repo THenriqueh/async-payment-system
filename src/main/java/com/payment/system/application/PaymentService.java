@@ -3,6 +3,7 @@ package com.payment.system.application;
 import com.payment.system.domain.Payment;
 import com.payment.system.domain.PaymentStatus;
 import com.payment.system.domain.events.PaymentRequestedEvent;
+import com.payment.system.domain.exception.PaymentNotFoundException;
 import com.payment.system.domain.ports.in.ProcessPaymentCommand;
 import com.payment.system.domain.ports.in.ProcessPaymentUseCase;
 import com.payment.system.domain.ports.in.RequestPaymentUseCase;
@@ -25,6 +26,11 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
     private final LoadPaymentPort loadPaymentPort;
     private final PublishEventPort publishEventPort;
 
+
+    @Override
+    public Payment getRequestedPaymentById(UUID id) {
+        return loadPaymentPort.findById(id).orElseThrow(() -> new PaymentNotFoundException(id));
+    }
 
     @Override
     public Payment requestPayment(ProcessPaymentCommand processPaymentCommand) {
