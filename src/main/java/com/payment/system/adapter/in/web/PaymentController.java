@@ -1,19 +1,18 @@
-package com.payment.system.controller;
+package com.payment.system.adapter.in.web;
 
 import com.payment.system.domain.Payment;
 import com.payment.system.domain.ports.in.ProcessPaymentCommand;
 import com.payment.system.domain.ports.in.RequestPaymentUseCase;
-import com.payment.system.dto.PaymentRequest;
-import com.payment.system.dto.PaymentResponse;
+import com.payment.system.adapter.in.web.dto.PaymentRequest;
+import com.payment.system.adapter.in.web.dto.PaymentResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +22,11 @@ public class PaymentController {
 
     private final RequestPaymentUseCase processPaymentUseCase;
 
+    @GetMapping("/{paymentId}")
+    public ResponseEntity<PaymentResponse> getPayment(@PathVariable  UUID paymentId) {
+       Payment payment = processPaymentUseCase.getRequestedPaymentById(paymentId);
+        return ResponseEntity.ok(PaymentResponse.from(payment));
+    }
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
         ProcessPaymentCommand command = new ProcessPaymentCommand(

@@ -1,4 +1,4 @@
-package com.payment.system.dto;
+package com.payment.system.adapter.in.web.dto;
 
 import java.time.Instant;
 

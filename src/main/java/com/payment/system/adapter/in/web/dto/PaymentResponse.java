@@ -1,4 +1,4 @@
-package com.payment.system.dto;
+package com.payment.system.adapter.in.web.dto;
 
 import com.payment.system.domain.Payment;
 import com.payment.system.domain.PaymentStatus;

@@ -1,11 +1,10 @@
-package com.payment.system.application;
+package com.payment.system.domain.exception;
 
 import java.util.UUID;
 
-public class PaymentNotFoundException extends  RuntimeException {
+public class PaymentNotFoundException extends RuntimeException {
 
     public PaymentNotFoundException(UUID paymentId) {
-
         super("Payment not found with id: " + paymentId);
     }
 }

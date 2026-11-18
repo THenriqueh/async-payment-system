@@ -1,6 +1,7 @@
-package com.payment.system.controller;
+package com.payment.system.adapter.in.web;
 
-import com.payment.system.dto.ErrorResponse;
+import com.payment.system.adapter.in.web.dto.ErrorResponse;
+import com.payment.system.domain.exception.PaymentNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler {
         log.error("Database error", ex);
         ErrorResponse error = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error to process the request, please try again later.");
         return ResponseEntity.internalServerError().body(error);
+    }
+
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentNotFound(PaymentNotFoundException ex) {
+        log.warn("Payment not found: {}", ex.getMessage());
+        ErrorResponse error = ErrorResponse.of(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 
