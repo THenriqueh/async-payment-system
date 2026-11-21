@@ -61,14 +61,6 @@ public class Payment {
         return payment;
     }
 
-    public void authorize(){
-        if(valor.compareTo(LIMIT) > 0){
-           fail();
-           return;
-        }
-        changeStatus(PaymentStatus.AUTHORIZED);
-    }
-
     public void fail() {
         changeStatus(PaymentStatus.FAILED);
     }

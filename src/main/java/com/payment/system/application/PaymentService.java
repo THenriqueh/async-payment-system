@@ -7,6 +7,7 @@ import com.payment.system.domain.exception.PaymentNotFoundException;
 import com.payment.system.domain.ports.in.ProcessPaymentCommand;
 import com.payment.system.domain.ports.in.ProcessPaymentUseCase;
 import com.payment.system.domain.ports.in.RequestPaymentUseCase;
+import com.payment.system.domain.ports.out.AuthorizationPort;
 import com.payment.system.domain.ports.out.LoadPaymentPort;
 import com.payment.system.domain.ports.out.PublishEventPort;
 import com.payment.system.domain.ports.out.SavePaymentPort;
@@ -25,6 +26,7 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
     private final SavePaymentPort savePaymentPort;
     private final LoadPaymentPort loadPaymentPort;
     private final PublishEventPort publishEventPort;
+    private final AuthorizationPort authorizationPort;
 
 
     @Override
@@ -35,7 +37,6 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
     @Override
     public Payment requestPayment(ProcessPaymentCommand processPaymentCommand) {
         log.info("Processing payment for sender={}, recipient={}", processPaymentCommand.sender(), processPaymentCommand.recipient());
-
         Optional<Payment> existing = loadPaymentPort.findByIdempotencyKey(processPaymentCommand.idempotencyKey());
         if (existing.isPresent()) {
             log.warn("Payment with idempotencyKey={} already exists, returning existing payment with id={}", processPaymentCommand.idempotencyKey(), existing.get().getId());
@@ -66,13 +67,15 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
             log.warn("Payment id={} already processed, status={}, skipping", payment.getId(), payment.getStatus());
             return payment;
         }
-        payment.authorize();
+        boolean isAuthorized = authorizationPort.authorize(payment.getValor());
 
-        if (payment.getStatus() == PaymentStatus.AUTHORIZED) {
+        if (isAuthorized) {
+            payment.changeStatus(PaymentStatus.AUTHORIZED);
             log.info("Payment with id={} authorized successfully, status={}", payment.getId(), payment.getStatus());
             payment.capture();
             log.info("Payment with id={} captured, status={}", payment.getId(), payment.getStatus());
         } else {
+            payment.fail();
             log.warn("Payment with id={} was not authorized, status={}", payment.getId(), payment.getStatus());
         }
 
