@@ -2,7 +2,9 @@ package com.payment.system.adapter.out.client;
 
 import com.payment.system.adapter.out.client.dto.AuthorizationRequest;
 import com.payment.system.adapter.out.client.dto.AuthorizationResponse;
+import com.payment.system.adapter.out.client.exception.AuthorizationUnavailableException;
 import com.payment.system.domain.ports.out.AuthorizationPort;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,12 +14,13 @@ import java.math.BigDecimal;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class AuthorizationHttpAdapter implements AuthorizationPort {
 
+public class AuthorizationHttpAdapter implements AuthorizationPort {
 
     private final RestClient restClient;
 
     @Override
+    @CircuitBreaker(name = "authorizer", fallbackMethod = "authorizeFallback")
     public boolean authorize(BigDecimal valor) {
         log.info("Requesting authorization to client authorizer, whith value ={}", valor);
         AuthorizationResponse response = restClient.post()
@@ -27,5 +30,10 @@ public class AuthorizationHttpAdapter implements AuthorizationPort {
                 .body(AuthorizationResponse.class);
 
         return response.approved();
+    }
+
+    public boolean authorizeFallback(BigDecimal valor, Throwable throwable) {
+        log.error("Authorization service unavailable for value={}, reason={}", valor, throwable.getMessage());
+        throw new AuthorizationUnavailableException(valor, throwable);
     }
 }
