@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentEventKafkaAdapter implements PublishEventPort {
+public class PaymentEventKafkaAdapter {
 
     private final KafkaTemplate<String, PaymentRequestedEvent> kafkaTemplate;
 
-    @Override
+
     public void publish(PaymentRequestedEvent event) {
         kafkaTemplate.send("payments.requested", event.id().toString(), event);
     }

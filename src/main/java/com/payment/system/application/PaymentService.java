@@ -14,6 +14,7 @@ import com.payment.system.domain.ports.out.SavePaymentPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
     }
 
     @Override
+    @Transactional
     public Payment requestPayment(ProcessPaymentCommand processPaymentCommand) {
         log.info("Processing payment for sender={}, recipient={}", processPaymentCommand.sender(), processPaymentCommand.recipient());
         Optional<Payment> existing = loadPaymentPort.findByIdempotencyKey(processPaymentCommand.idempotencyKey());

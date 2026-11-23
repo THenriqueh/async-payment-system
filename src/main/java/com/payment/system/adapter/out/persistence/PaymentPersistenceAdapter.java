@@ -1,5 +1,8 @@
 package com.payment.system.adapter.out.persistence;
 
+import com.payment.system.adapter.out.persistence.entity.PaymentEntity;
+import com.payment.system.adapter.out.persistence.mapper.PaymentMapper;
+import com.payment.system.adapter.out.persistence.repository.PaymentJpaRepository;
 import com.payment.system.domain.Payment;
 import com.payment.system.domain.ports.out.LoadPaymentPort;
 import com.payment.system.domain.ports.out.SavePaymentPort;

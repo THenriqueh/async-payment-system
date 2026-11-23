@@ -1,4 +1,4 @@
-package com.payment.system.adapter.out.persistence;
+package com.payment.system.adapter.out.persistence.entity;
 
 import com.payment.system.domain.PaymentStatus;
 import jakarta.persistence.*;

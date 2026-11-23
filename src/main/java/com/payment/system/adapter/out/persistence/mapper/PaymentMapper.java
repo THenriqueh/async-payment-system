@@ -1,5 +1,6 @@
-package com.payment.system.adapter.out.persistence;
+package com.payment.system.adapter.out.persistence.mapper;
 
+import com.payment.system.adapter.out.persistence.entity.PaymentEntity;
 import com.payment.system.domain.Payment;
 import org.springframework.stereotype.Component;
 
