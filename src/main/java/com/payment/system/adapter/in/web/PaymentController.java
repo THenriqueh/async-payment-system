@@ -22,6 +22,8 @@ public class PaymentController {
 
     private final RequestPaymentUseCase processPaymentUseCase;
 
+
+
     @GetMapping("/{paymentId}")
     public ResponseEntity<PaymentResponse> getPayment(@PathVariable  UUID paymentId) {
        Payment payment = processPaymentUseCase.getRequestedPaymentById(paymentId);

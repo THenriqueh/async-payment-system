@@ -75,7 +75,7 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
             payment.changeStatus(PaymentStatus.AUTHORIZED);
             log.info("Payment with id={} authorized successfully, status={}", payment.getId(), payment.getStatus());
             payment.capture();
-            log.info("Payment with id={} captured, status={}", payment.getId(), payment.getStatus());
+            log.info("Payment with id={} CAPTURED", payment.getId());
         } else {
             payment.fail();
             log.warn("Payment with id={} was not authorized, status={}", payment.getId(), payment.getStatus());

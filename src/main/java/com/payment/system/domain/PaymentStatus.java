@@ -18,13 +18,13 @@ public enum PaymentStatus {
     CAPTURED{
         @Override
         public boolean canTransitionTo(PaymentStatus newStatus) {
-            return false; // No transitions allowed from CAPTURED
+            return false;
         }
     },
     FAILED{
         @Override
         public boolean canTransitionTo(PaymentStatus newStatus) {
-            return false; // No transitions allowed from FAILED
+            return false;
         }
     };
 

@@ -1,14 +1,11 @@
 package com.payment.system.adapter.in.messaging;
 
-import com.payment.system.domain.Payment;
 import com.payment.system.domain.events.PaymentRequestedEvent;
 import com.payment.system.domain.ports.in.ProcessPaymentUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Slf4j
 @Component

@@ -14,8 +14,6 @@ public class Payment {
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
-    private static final BigDecimal LIMIT = new BigDecimal("5000");
-
     public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
@@ -37,7 +35,7 @@ public class Payment {
         this.valor = valor;
         this.sender = sender;
         this.recipient = recipient;
-        this.status = PaymentStatus.REQUESTED; // Default status is REQUESTED
+        this.status = PaymentStatus.REQUESTED;
         this.idempotencyKey = idempotencyKey;
     }
 

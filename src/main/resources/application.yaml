@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: Payments
+
+  # Postgres connection
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payments
+    username: payments
+    password: payments
+    driver-class-name: org.postgresql.Driver
+
+  # Flyway disabled (using ddl-auto for now)
+  flyway:
+    enabled: false
+
+  # JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Kafka
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: payment-processor
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.payment.system.domain.events
+
+server:
+  port: 8081
+
+authorizer:
+  url: http://localhost:8082
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authorizer:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+
+jwt:
+  secret: "a-very-long-secret-key-at-least-32-chars-change-me"
+  expiration: 3600000
