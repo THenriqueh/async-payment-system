@@ -29,9 +29,16 @@ public class AuthorizationHttpAdapter implements AuthorizationPort {
                 .retrieve()
                 .body(AuthorizationResponse.class);
 
+        if (response == null) {
+            throw new AuthorizationUnavailableException(valor);
+        }
+
         return response.approved();
     }
-
+    /**
+     * Fallback invoked by Resilience4j when the authorizer call fails or the circuit
+     * is open; the {@link Throwable} parameter carries the cause.
+     */
     public boolean authorizeFallback(BigDecimal valor, Throwable throwable) {
         log.error("Authorization service unavailable for value={}, reason={}", valor, throwable.getMessage());
         throw new AuthorizationUnavailableException(valor, throwable);

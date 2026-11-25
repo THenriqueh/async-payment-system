@@ -12,6 +12,13 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Publishes payment events by writing them to the outbox table within the same
+ * transaction as the payment — it does NOT publish to Kafka directly. This closes
+ * the dual-write gap: an event can only exist if the payment was committed.
+ * The actual Kafka publishing is done later by {@link OutboxPublisher}.
+ */
+
 @Component
 @RequiredArgsConstructor
 public class OutboxPublishAdapter implements PublishEventPort {

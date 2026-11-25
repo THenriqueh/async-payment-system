@@ -12,7 +12,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+/**
+ * Scheduled relay for the outbox pattern: polls unpublished events and pushes
+ * them to Kafka, decoupling the database write from the broker.
+ * Requires {@code @EnableScheduling} on the application class to run.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

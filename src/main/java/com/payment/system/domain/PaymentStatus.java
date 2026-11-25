@@ -1,5 +1,9 @@
 package com.payment.system.domain;
 
+/**
+ * Payment lifecycle as a state machine; each constant declares its valid
+ * transitions via {@link #canTransitionTo(PaymentStatus)}.
+ */
 public enum PaymentStatus {
 
     REQUESTED{
