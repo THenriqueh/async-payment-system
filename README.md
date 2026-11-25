@@ -32,14 +32,14 @@ The foundation is **hexagonal architecture (ports & adapters)**: the domain core
 
 ```mermaid
 flowchart LR
-    Client([Client]) -->|POST /payments| API[Payment API]
-    API -->|payment + event<br/>same transaction| DB[(PostgreSQL)]
-    Relay[Outbox Relay<br/>@Scheduled] -->|reads unpublished| DB
-    Relay -->|publishes| Kafka{{Kafka<br/>payments.requested}}
-    Kafka --> Consumer[Payment Consumer]
-    Consumer -->|authorizes<br/>via Circuit Breaker| Authorizer[Authorizer Service]
-    Consumer -->|updates status| DB
-    Consumer -.->|repeated failure| DLQ{{payments.requested.DLT}}
+    Client(["Client"]) -->|"POST /payments"| API["Payment API"]
+    API -->|"payment + event<br/>same transaction"| DB[("PostgreSQL")]
+    Relay["Outbox Relay<br/>@Scheduled"] -->|"reads unpublished"| DB
+    Relay -->|"publishes"| Kafka{{"Kafka<br/>payments.requested"}}
+    Kafka --> Consumer["Payment Consumer"]
+    Consumer -->|"authorizes<br/>via Circuit Breaker"| Authorizer["Authorizer Service"]
+    Consumer -->|"updates status"| DB
+    Consumer -.->|"repeated failure"| DLQ{{"payments.requested.DLT"}}
 ```
 
 ### Status lifecycle
