@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: authorizer
+
+server:
+  port: 8082
