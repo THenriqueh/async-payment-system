@@ -61,14 +61,14 @@ stateDiagram-v2
 ## 🧰 Tech stack
 
 - **Java 21** + **Spring Boot 3.3.5**
-- **Spring Kafka** — event-driven messaging
+- **Spring Kafka** - event-driven messaging
 - **PostgreSQL** + **Spring Data JPA** + **Flyway** (migrations)
-- **Resilience4j** — circuit breaker and fallback
-- **Spring Security + JWT** (jjwt 0.12.6) — stateless authentication
-- **springdoc / OpenAPI** — API documentation and Swagger UI
-- **MapStruct** — mapping between layers
-- **Actuator + Micrometer/Prometheus** — metrics and observability
-- **JUnit 5 + Mockito + Testcontainers** — unit and integration testing
+- **Resilience4j** - circuit breaker and fallback
+- **Spring Security + JWT** (jjwt 0.12.6) - stateless authentication
+- **springdoc / OpenAPI** - API documentation and Swagger UI
+- **MapStruct** - mapping between layers
+- **Actuator + Micrometer/Prometheus** - metrics and observability
+- **JUnit 5 + Mockito + Testcontainers** - unit and integration testing
 
 ---
 
@@ -126,9 +126,9 @@ All endpoints except `/auth/**` and the Swagger routes require a `Bearer <token>
 
 ## 🧪 Tests
 
-- **Unit — domain** (`PaymentTest`): construction invariants and state transitions, no framework.
-- **Unit — application** (`PaymentServiceTest`): 6 scenarios with Mockito (idempotency, new payment, not found, skip-if-already-processed, authorized, declined).
-- **Integration** (Testcontainers): spins up **real Postgres and Kafka** in disposable containers to validate the application context — a self-sufficient test that runs on any machine with Docker, with no infrastructure started by hand.
+- **Unit - domain** (`PaymentTest`): construction invariants and state transitions, no framework.
+- **Unit - application** (`PaymentServiceTest`): 6 scenarios with Mockito (idempotency, new payment, not found, skip-if-already-processed, authorized, declined).
+- **Integration** (Testcontainers): spins up **real Postgres and Kafka** in disposable containers to validate the application context - a self-sufficient test that runs on any machine with Docker, with no infrastructure started by hand.
 
 ```bash
 ./mvnw test
@@ -149,7 +149,7 @@ Next layers planned to evolve the project from "application" to "system":
 
 ## 👤 Author
 
-**Thallis Ferreira** — Backend Developer (Java)
+**Thallis Ferreira** - Backend Developer (Java)
 
 - LinkedIn: [thallis-ferreira-dev-java](https://linkedin.com/in/thallis-ferreira-dev-java)
 - GitHub: [@THenriqueh](https://github.com/THenriqueh)
