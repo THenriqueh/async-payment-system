@@ -6,9 +6,10 @@
 
 ## 📌 About
 
-This system receives a payment order, authorizes it **asynchronously** and moves it through a well-defined lifecycle. The point is **not** CRUD — it's how to handle the hard problems of a real payment system: guaranteeing that a published event always reflects what was persisted, surviving external services that go down, never processing the same payment twice, and keeping the domain clean of infrastructure concerns.
+Async payment system, PIX-style. A payment is created, authorized asynchronously against an external service, and moves through a REQUESTED → AUTHORIZED → CAPTURED/FAILED lifecycle. I built it to go deeper on event-driven architecture and the reliability problems that come with it. It was built as a portfolio project to demonstrate, in practice, patterns that usually only show up in large production systems. 
 
-It was built as a portfolio project to demonstrate, in practice, patterns that usually only show up in large production systems.
+The patterns I used, and why, are in the table below.
+
 
 ---
 
@@ -85,7 +86,7 @@ async-payment-system/
 └── README.md
 ```
 
-The **Authorizer** is a small standalone service that approves or declines payments. In a real system this role would be played by an external acquirer/bank; here it exists so the circuit breaker has a real dependency to protect. It runs as a container alongside the infrastructure.
+The Authorizer is a small separate service that approves or declines payments. In production this would be an external acquirer or bank. Here it's a stub, mostly so the circuit breaker has a real service to call.
 
 ---
 
