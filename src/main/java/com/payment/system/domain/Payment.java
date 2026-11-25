@@ -8,17 +8,17 @@ import java.util.UUID;
 @Getter
 public class Payment {
     private final UUID id;
-    private final BigDecimal valor;
+    private final BigDecimal value;
     private final String sender;
     private final String recipient;
     private PaymentStatus status;
     private final UUID idempotencyKey;
 
-    public Payment(UUID id, BigDecimal valor, String sender, String recipient, UUID idempotencyKey) {
+    public Payment(UUID id, BigDecimal value, String sender, String recipient, UUID idempotencyKey) {
         if(id == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
-        if(valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+        if(value == null || value.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Valor must be greater than zero");
         }
         if (sender == null || sender.isBlank()) {
@@ -32,7 +32,7 @@ public class Payment {
         }
 
         this.id = id;
-        this.valor = valor;
+        this.value = value;
         this.sender = sender;
         this.recipient = recipient;
         this.status = PaymentStatus.REQUESTED;

@@ -69,7 +69,7 @@ public class PaymentService implements RequestPaymentUseCase, ProcessPaymentUseC
             log.warn("Payment id={} already processed, status={}, skipping", payment.getId(), payment.getStatus());
             return payment;
         }
-        boolean isAuthorized = authorizationPort.authorize(payment.getValor());
+        boolean isAuthorized = authorizationPort.authorize(payment.getValue());
 
         if (isAuthorized) {
             payment.changeStatus(PaymentStatus.AUTHORIZED);

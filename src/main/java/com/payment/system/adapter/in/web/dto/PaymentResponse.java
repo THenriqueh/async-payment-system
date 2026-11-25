@@ -19,7 +19,7 @@ public record PaymentResponse(
                 payment.getSender(),
                 payment.getRecipient(),
                 payment.getStatus(),
-                payment.getValor()
+                payment.getValue()
         );
     }
 }

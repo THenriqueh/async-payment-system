@@ -17,7 +17,7 @@ public record PaymentRequestedEvent(
     public static PaymentRequestedEvent from(Payment payment) {
         return new PaymentRequestedEvent(
                 payment.getId(),
-                payment.getValor(),
+                payment.getValue(),
                 payment.getSender(),
                 payment.getRecipient(),
                 payment.getIdempotencyKey(),

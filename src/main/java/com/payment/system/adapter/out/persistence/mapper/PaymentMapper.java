@@ -11,7 +11,7 @@ public class PaymentMapper {
     public PaymentEntity toEntity(Payment payment) {
         return new PaymentEntity(
                 payment.getId(),
-                payment.getValor(),
+                payment.getValue(),
                 payment.getSender(),
                 payment.getRecipient(),
                 payment.getStatus(),
