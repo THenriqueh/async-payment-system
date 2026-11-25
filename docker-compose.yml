@@ -52,6 +52,12 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  authorizer:
+    build: ./authorizer
+    container_name: authorizer
+    ports:
+      - "8082:8082"
+
 volumes:
   postgres_data:
   pgadmin_data:
