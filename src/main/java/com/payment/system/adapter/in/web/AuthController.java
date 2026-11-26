@@ -1,7 +1,8 @@
-package com.payment.system.security;
+package com.payment.system.adapter.in.web;
 
-import com.payment.system.security.dto.LoginRequest;
-import com.payment.system.security.dto.LoginResponse;
+import com.payment.system.security.TokenService;
+import com.payment.system.adapter.in.web.dto.LoginRequest;
+import com.payment.system.adapter.in.web.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
