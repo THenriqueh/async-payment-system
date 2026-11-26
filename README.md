@@ -6,9 +6,10 @@
 
 ## 📌 About
 
-This system receives a payment order, authorizes it **asynchronously** and moves it through a well-defined lifecycle. The point is **not** CRUD — it's how to handle the hard problems of a real payment system: guaranteeing that a published event always reflects what was persisted, surviving external services that go down, never processing the same payment twice, and keeping the domain clean of infrastructure concerns.
+Async payment system, PIX-style. A payment is created, authorized asynchronously against an external service, and moves through a REQUESTED → AUTHORIZED → CAPTURED/FAILED lifecycle. I built it to go deeper on event-driven architecture and the reliability problems that come with it. It was built as a portfolio project to demonstrate, in practice, patterns that usually only show up in large production systems. 
 
-It was built as a portfolio project to demonstrate, in practice, patterns that usually only show up in large production systems.
+The patterns I used, and why, are in the table below.
+
 
 ---
 
@@ -60,14 +61,14 @@ stateDiagram-v2
 ## 🧰 Tech stack
 
 - **Java 21** + **Spring Boot 3.3.5**
-- **Spring Kafka** — event-driven messaging
+- **Spring Kafka** - event-driven messaging
 - **PostgreSQL** + **Spring Data JPA** + **Flyway** (migrations)
-- **Resilience4j** — circuit breaker and fallback
-- **Spring Security + JWT** (jjwt 0.12.6) — stateless authentication
-- **springdoc / OpenAPI** — API documentation and Swagger UI
-- **MapStruct** — mapping between layers
-- **Actuator + Micrometer/Prometheus** — metrics and observability
-- **JUnit 5 + Mockito + Testcontainers** — unit and integration testing
+- **Resilience4j** - circuit breaker and fallback
+- **Spring Security + JWT** (jjwt 0.12.6) - stateless authentication
+- **springdoc / OpenAPI** - API documentation and Swagger UI
+- **MapStruct** - mapping between layers
+- **Actuator + Micrometer/Prometheus** - metrics and observability
+- **JUnit 5 + Mockito + Testcontainers** - unit and integration testing
 
 ---
 
@@ -85,7 +86,7 @@ async-payment-system/
 └── README.md
 ```
 
-The **Authorizer** is a small standalone service that approves or declines payments. In a real system this role would be played by an external acquirer/bank; here it exists so the circuit breaker has a real dependency to protect. It runs as a container alongside the infrastructure.
+The Authorizer is a small separate service that approves or declines payments. In production this would be an external acquirer or bank. Here it's a stub, mostly so the circuit breaker has a real service to call.
 
 ---
 
@@ -125,9 +126,9 @@ All endpoints except `/auth/**` and the Swagger routes require a `Bearer <token>
 
 ## 🧪 Tests
 
-- **Unit — domain** (`PaymentTest`): construction invariants and state transitions, no framework.
-- **Unit — application** (`PaymentServiceTest`): 6 scenarios with Mockito (idempotency, new payment, not found, skip-if-already-processed, authorized, declined).
-- **Integration** (Testcontainers): spins up **real Postgres and Kafka** in disposable containers to validate the application context — a self-sufficient test that runs on any machine with Docker, with no infrastructure started by hand.
+- **Unit - domain** (`PaymentTest`): construction invariants and state transitions, no framework.
+- **Unit - application** (`PaymentServiceTest`): 6 scenarios with Mockito (idempotency, new payment, not found, skip-if-already-processed, authorized, declined).
+- **Integration** (Testcontainers): spins up **real Postgres and Kafka** in disposable containers to validate the application context - a self-sufficient test that runs on any machine with Docker, with no infrastructure started by hand.
 
 ```bash
 ./mvnw test
@@ -148,7 +149,7 @@ Next layers planned to evolve the project from "application" to "system":
 
 ## 👤 Author
 
-**Thallis Ferreira** — Backend Developer (Java)
+**Thallis Ferreira** - Backend Developer (Java)
 
 - LinkedIn: [thallis-ferreira-dev-java](https://linkedin.com/in/thallis-ferreira-dev-java)
 - GitHub: [@THenriqueh](https://github.com/THenriqueh)
